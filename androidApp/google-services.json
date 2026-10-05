@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "783946193635",
+    "project_id": "nocturnabooktracker",
+    "storage_bucket": "nocturnabooktracker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783946193635:android:46c20a4f96e0c67348c3d6",
+        "android_client_info": {
+          "package_name": "org.matias.nocturnatracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5aJbvW20Sz8k47pDUYBOmDDXLHgdTSH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
