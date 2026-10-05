@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -44,6 +45,17 @@ fun SearchScreen(
             value = uiState.query,
             onValueChange = { viewModel.onQueryChange(it) },
             placeholder = "Buscar título, autor o grimorio...",
+            trailingIcon = if (uiState.query.isNotEmpty()) {
+                {
+                    IconButton(onClick = { viewModel.onQueryChange("") }) {
+                        Text(
+                            text = "✕",
+                            color = NocturnaGold,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+            } else null,
             modifier = Modifier.fillMaxWidth()
         )
 
