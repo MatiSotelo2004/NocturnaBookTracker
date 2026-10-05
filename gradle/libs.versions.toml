@@ -1,5 +1,5 @@
 [versions]
-agp = "9.1.1"
+agp = "9.4.1"
 android-compileSdk = "37"
 android-minSdk = "24"
 android-targetSdk = "37"
@@ -17,6 +17,8 @@ androidx-navigation = "2.8.0-alpha10"
 ktor = "3.0.3"
 kotlinx-serialization = "1.8.0"
 coil = "3.0.4"
+firebase = "1.12.0"
+firebase-bom = "33.1.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -51,6 +53,11 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 # Coil 3
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

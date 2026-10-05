@@ -45,6 +45,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
             implementation(libs.ktor.client.android)
+            implementation(project.dependencies.platform(libs.firebase.bom))
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -68,6 +69,10 @@ kotlin {
             // Coil 3
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+
+            // Firebase
+            implementation(libs.firebase.auth)
+            implementation(libs.firebase.firestore)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
