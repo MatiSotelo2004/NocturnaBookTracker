@@ -1,5 +1,8 @@
 package org.matias.nocturnatracker.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Book(
     val id: String,
     val title: String,
@@ -9,5 +12,6 @@ data class Book(
     val pageCount: Int?,
     val rating: Double?,
     val genres: List<String>,
-    val description: String? = null
+    val description: String? = null,
+    val status: String? = null
 )

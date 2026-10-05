@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ fun NocturnaTopBar(
     title: String = "NOCTURNA",
     subtitle: String? = null,
     modifier: Modifier = Modifier,
+    onSignOutClick: (() -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null
 ) {
@@ -37,6 +39,16 @@ fun NocturnaTopBar(
             navigationIcon?.invoke()
         },
         actions = {
+            if (onSignOutClick != null) {
+                TextButton(onClick = onSignOutClick) {
+                    Text(
+                        text = "SALIR",
+                        color = NocturnaGold,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
             actions?.invoke(this)
         },
         colors = TopAppBarDefaults.topAppBarColors(

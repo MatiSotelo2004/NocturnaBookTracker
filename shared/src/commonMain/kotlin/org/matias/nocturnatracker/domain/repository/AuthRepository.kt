@@ -4,12 +4,13 @@ import kotlinx.coroutines.flow.Flow
 
 data class User(
     val uid: String,
-    val email: String?
+    val email: String?,
+    val username: String? = null
 )
 
 interface AuthRepository {
     val currentUser: Flow<User?>
     suspend fun signIn(email: String, pass: String): Result<Unit>
-    suspend fun signUp(email: String, pass: String): Result<Unit>
+    suspend fun signUp(email: String, pass: String, username: String): Result<Unit>
     suspend fun signOut()
 }

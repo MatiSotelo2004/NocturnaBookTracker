@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,14 +16,20 @@ import androidx.navigation.navArgument
 import org.matias.nocturnatracker.core.components.NocturnaTopBar
 import org.matias.nocturnatracker.core.theme.NocturnaPrimary
 import org.matias.nocturnatracker.core.theme.NocturnaTheme
+import org.matias.nocturnatracker.data.repository.AuthRepositoryImpl
 import org.matias.nocturnatracker.navigation.NocturnaBottomBar
 import org.matias.nocturnatracker.navigation.Screen
+import org.matias.nocturnatracker.presentation.auth.AuthViewModel
 import org.matias.nocturnatracker.presentation.detail.DetailScreen
 import org.matias.nocturnatracker.presentation.library.LibraryScreen
+import org.matias.nocturnatracker.presentation.profile.ProfileScreen
 import org.matias.nocturnatracker.presentation.search.SearchScreen
 
 @Composable
 fun App() {
+    val authRepository = remember { AuthRepositoryImpl() }
+    val authViewModel = remember { AuthViewModel(authRepository) }
+
     NocturnaTheme {
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -36,6 +43,7 @@ fun App() {
                 NocturnaTopBar(
                     title = when {
                         currentRoute == Screen.Library.route -> "MI GRIMORIO"
+                        currentRoute == Screen.Profile.route -> "PERFIL"
                         isDetailScreen -> "DETALLES"
                         else -> "NOCTURNA"
                     }
@@ -83,6 +91,12 @@ fun App() {
                         onBookClick = { bookId ->
                             navController.navigate(Screen.Detail.createRoute(bookId))
                         }
+                    )
+                }
+
+                composable(Screen.Profile.route) {
+                    ProfileScreen(
+                        authViewModel = authViewModel
                     )
                 }
 

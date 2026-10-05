@@ -7,9 +7,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.matias.nocturnatracker.data.repository.AuthRepositoryImpl
 import org.matias.nocturnatracker.data.repository.BookRepositoryImpl
+import org.matias.nocturnatracker.data.repository.LibraryRepositoryImpl
 import org.matias.nocturnatracker.domain.model.Book
+import org.matias.nocturnatracker.domain.repository.AuthRepository
 import org.matias.nocturnatracker.domain.repository.BookRepository
+import org.matias.nocturnatracker.domain.repository.LibraryRepository
 
 data class DetailUiState(
     val isLoading: Boolean = true,
@@ -22,13 +26,23 @@ data class DetailUiState(
 
 class DetailViewModel(
     private val bookId: String,
-    private val repository: BookRepository = BookRepositoryImpl()
+    private val repository: BookRepository = BookRepositoryImpl(),
+    private val libraryRepository: LibraryRepository = LibraryRepositoryImpl(),
+    private val authRepository: AuthRepository = AuthRepositoryImpl()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DetailUiState())
     val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
 
+    private var currentUserId: String? = null
+
     init {
+        viewModelScope.launch {
+            authRepository.currentUser.collect { user ->
+                currentUserId = user?.uid
+                checkSavedStatus()
+            }
+        }
         loadBook()
     }
 
@@ -43,6 +57,7 @@ class DetailViewModel(
                             book = book
                         )
                     }
+                    checkSavedStatus()
                 }
                 .onFailure { error ->
                     _uiState.update {
@@ -55,8 +70,32 @@ class DetailViewModel(
         }
     }
 
+    private fun checkSavedStatus() {
+        viewModelScope.launch {
+            libraryRepository.getUserBooks(currentUserId).collect { savedBooks ->
+                val savedBook = savedBooks.find { it.id == bookId }
+                if (savedBook != null) {
+                    _uiState.update {
+                        it.copy(
+                            isSaved = true,
+                            readingStatus = savedBook.status ?: "Por Leer"
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(isSaved = false)
+                    }
+                }
+            }
+        }
+    }
+
     fun setReadingStatus(status: String) {
+        val currentBook = _uiState.value.book ?: return
         _uiState.update { it.copy(readingStatus = status, isSaved = true) }
+        viewModelScope.launch {
+            libraryRepository.saveBookStatus(currentUserId, currentBook, status)
+        }
     }
 
     fun updateProgress(page: Int) {
@@ -64,6 +103,19 @@ class DetailViewModel(
     }
 
     fun toggleSaved() {
-        _uiState.update { it.copy(isSaved = !it.isSaved) }
+        val currentBook = _uiState.value.book ?: return
+        val currentlySaved = _uiState.value.isSaved
+        if (currentlySaved) {
+            _uiState.update { it.copy(isSaved = false) }
+            viewModelScope.launch {
+                libraryRepository.removeBook(currentUserId, currentBook.id)
+            }
+        } else {
+            val status = _uiState.value.readingStatus
+            _uiState.update { it.copy(isSaved = true) }
+            viewModelScope.launch {
+                libraryRepository.saveBookStatus(currentUserId, currentBook, status)
+            }
+        }
     }
 }

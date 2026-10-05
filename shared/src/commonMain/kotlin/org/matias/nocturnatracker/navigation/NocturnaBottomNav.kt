@@ -1,15 +1,9 @@
 package org.matias.nocturnatracker.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.matias.nocturnatracker.core.theme.*
 
@@ -20,6 +14,7 @@ sealed class NavItem(
 ) {
     data object Search : NavItem(Screen.Search.route, "Explorar", "✦")
     data object Library : NavItem(Screen.Library.route, "Mi Grimorio", "📖")
+    data object Profile : NavItem(Screen.Profile.route, "Perfil", "⚜")
 }
 
 @Composable
@@ -28,7 +23,7 @@ fun NocturnaBottomBar(
     onNavigate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val items = listOf(NavItem.Search, NavItem.Library)
+    val items = listOf(NavItem.Search, NavItem.Library, NavItem.Profile)
 
     NavigationBar(
         containerColor = NocturnaSurface,
