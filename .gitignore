@@ -17,3 +17,8 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+# Firebase & Google Services
+google-services.json
+GoogleService-Info.plist
+*.keystore
+*.jks
