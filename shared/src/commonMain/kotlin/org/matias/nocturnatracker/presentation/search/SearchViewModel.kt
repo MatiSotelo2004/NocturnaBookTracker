@@ -35,8 +35,19 @@ class SearchViewModel(
     }
 
     fun onQueryChange(newQuery: String) {
-        _uiState.update { it.copy(query = newQuery) }
+        _uiState.update { it.copy(query = newQuery, errorMessage = null) }
         searchJob?.cancel()
+
+        if (newQuery.isBlank()) {
+            loadInitialBooks()
+            return
+        }
+
+        if (newQuery.trim().length < 2) {
+            // Don't trigger network search for single characters to avoid premature errors while typing
+            return
+        }
+
         searchJob = viewModelScope.launch {
             delay(450) // Debounce to protect OpenLibrary API rate limit
             executeSearch(newQuery, _uiState.value.selectedGenre)
@@ -57,7 +68,7 @@ class SearchViewModel(
                 _uiState.update { it.copy(isLoading = true, errorMessage = null) }
                 repository.getBooksByGenre(genre)
                     .onSuccess { books ->
-                        _uiState.update { it.copy(isLoading = false, books = books) }
+                        _uiState.update { it.copy(isLoading = false, books = books, errorMessage = null) }
                     }
                     .onFailure { error ->
                         _uiState.update {
@@ -87,7 +98,7 @@ class SearchViewModel(
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             repository.getFeaturedBooks()
                 .onSuccess { books ->
-                    _uiState.update { it.copy(isLoading = false, books = books) }
+                    _uiState.update { it.copy(isLoading = false, books = books, errorMessage = null) }
                 }
                 .onFailure { error ->
                     _uiState.update {
@@ -113,7 +124,7 @@ class SearchViewModel(
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
         repository.searchBooks(query)
             .onSuccess { books ->
-                _uiState.update { it.copy(isLoading = false, books = books) }
+                _uiState.update { it.copy(isLoading = false, books = books, errorMessage = null) }
             }
             .onFailure { error ->
                 _uiState.update {
