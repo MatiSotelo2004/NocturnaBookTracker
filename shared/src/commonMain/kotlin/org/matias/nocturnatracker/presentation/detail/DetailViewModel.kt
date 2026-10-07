@@ -20,8 +20,7 @@ data class DetailUiState(
     val book: Book? = null,
     val errorMessage: String? = null,
     val isSaved: Boolean = false,
-    val readingStatus: String = "Por Leer", // "Por Leer", "Leyendo", "Completado"
-    val currentPage: Int = 0
+    val readingStatus: String = "Por Leer" // "Por Leer", "Leyendo", "Completado"
 )
 
 class DetailViewModel(
@@ -96,10 +95,6 @@ class DetailViewModel(
         viewModelScope.launch {
             libraryRepository.saveBookStatus(currentUserId, currentBook, status)
         }
-    }
-
-    fun updateProgress(page: Int) {
-        _uiState.update { it.copy(currentPage = page) }
     }
 
     fun toggleSaved() {
