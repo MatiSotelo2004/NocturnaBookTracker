@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.matias.nocturnatracker.core.theme.NocturnaCrimson
 import org.matias.nocturnatracker.core.theme.NocturnaGold
-import org.matias.nocturnatracker.core.theme.NocturnaGoldLight
 
 enum class NocturnaButtonVariant {
     Gold,
@@ -29,7 +29,7 @@ fun NocturnaButton(
     modifier: Modifier = Modifier,
     variant: NocturnaButtonVariant = NocturnaButtonVariant.Gold,
     enabled: Boolean = true,
-    leadingIcon: (@Composable () -> Unit)? = null
+    leadingIcon: (@Composable () -> Unit)? = null,
 ) {
     val shape = RoundedCornerShape(30.dp)
 
@@ -44,16 +44,16 @@ fun NocturnaButton(
                     containerColor = NocturnaGold,
                     contentColor = Color.Black,
                     disabledContainerColor = NocturnaGold.copy(alpha = 0.4f),
-                    disabledContentColor = Color.Black.copy(alpha = 0.5f)
+                    disabledContentColor = Color.Black.copy(alpha = 0.5f),
                 ),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
             ) {
                 leadingIcon?.invoke()
                 Text(
                     text = text,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
-                    letterSpacing = 0.5.sp
+                    letterSpacing = 0.5.sp,
                 )
             }
         }
@@ -66,16 +66,16 @@ fun NocturnaButton(
                 border = BorderStroke(1.dp, if (enabled) NocturnaGold else NocturnaGold.copy(alpha = 0.3f)),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = NocturnaGold,
-                    disabledContentColor = NocturnaGold.copy(alpha = 0.3f)
+                    disabledContentColor = NocturnaGold.copy(alpha = 0.3f),
                 ),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
             ) {
                 leadingIcon?.invoke()
                 Text(
                     text = text,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
-                    letterSpacing = 0.5.sp
+                    letterSpacing = 0.5.sp,
                 )
             }
         }
@@ -86,17 +86,17 @@ fun NocturnaButton(
                 enabled = enabled,
                 shape = shape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = org.matias.nocturnatracker.core.theme.NocturnaCrimson,
-                    contentColor = Color.White
+                    containerColor = NocturnaCrimson,
+                    contentColor = Color.White,
                 ),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
             ) {
                 leadingIcon?.invoke()
                 Text(
                     text = text,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
-                    letterSpacing = 0.5.sp
+                    letterSpacing = 0.5.sp,
                 )
             }
         }

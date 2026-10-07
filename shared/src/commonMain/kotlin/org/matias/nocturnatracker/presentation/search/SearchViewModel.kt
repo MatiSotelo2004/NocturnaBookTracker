@@ -9,20 +9,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.matias.nocturnatracker.data.repository.BookRepositoryImpl
 import org.matias.nocturnatracker.domain.model.Book
 import org.matias.nocturnatracker.domain.repository.BookRepository
-import org.matias.nocturnatracker.data.repository.BookRepositoryImpl
+import kotlin.time.Duration.Companion.milliseconds
 
 data class SearchUiState(
     val query: String = "",
     val selectedGenre: String = "Todos",
     val isLoading: Boolean = false,
     val books: List<Book> = emptyList(),
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
 )
 
 class SearchViewModel(
-    private val repository: BookRepository = BookRepositoryImpl()
+    private val repository: BookRepository = BookRepositoryImpl(),
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
@@ -49,7 +50,7 @@ class SearchViewModel(
         }
 
         searchJob = viewModelScope.launch {
-            delay(450) // Debounce to protect OpenLibrary API rate limit
+            delay(450.milliseconds) // Debounce to protect OpenLibrary API rate limit
             executeSearch(newQuery, _uiState.value.selectedGenre)
         }
     }
@@ -74,7 +75,7 @@ class SearchViewModel(
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                errorMessage = error.message ?: "No se pudieron obtener libros de $genre."
+                                errorMessage = error.message ?: "No se pudieron obtener libros de $genre.",
                             )
                         }
                     }
@@ -104,7 +105,7 @@ class SearchViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "Error al conectar con la biblioteca nocturna."
+                            errorMessage = error.message ?: "Error al conectar con la biblioteca nocturna.",
                         )
                     }
                 }
@@ -130,7 +131,7 @@ class SearchViewModel(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = error.message ?: "Error al buscar libros."
+                        errorMessage = error.message ?: "Error al buscar libros.",
                     )
                 }
             }

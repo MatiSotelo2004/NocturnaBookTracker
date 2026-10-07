@@ -17,12 +17,11 @@ import org.matias.nocturnatracker.core.theme.NocturnaPrimary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NocturnaTopBar(
-    title: String = "NOCTURNA",
-    subtitle: String? = null,
     modifier: Modifier = Modifier,
+    title: String = "NOCTURNA",
     onSignOutClick: (() -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
-    actions: (@Composable RowScope.() -> Unit)? = null
+    actions: (@Composable RowScope.() -> Unit)? = null,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -32,28 +31,28 @@ fun NocturnaTopBar(
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 letterSpacing = 2.sp,
-                color = NocturnaGold
+                color = NocturnaGold,
             )
         },
         navigationIcon = {
             navigationIcon?.invoke()
         },
         actions = {
-            if (onSignOutClick != null) {
-                TextButton(onClick = onSignOutClick) {
+            onSignOutClick?.let {
+                TextButton(onClick = it) {
                     Text(
                         text = "SALIR",
                         color = NocturnaGold,
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }
             actions?.invoke(this)
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = NocturnaPrimary
+            containerColor = NocturnaPrimary,
         ),
-        modifier = modifier
+        modifier = modifier,
     )
 }
