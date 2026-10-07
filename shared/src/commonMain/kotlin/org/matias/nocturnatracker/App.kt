@@ -19,6 +19,7 @@ import org.matias.nocturnatracker.core.theme.NocturnaTheme
 import org.matias.nocturnatracker.data.repository.AuthRepositoryImpl
 import org.matias.nocturnatracker.navigation.NocturnaBottomBar
 import org.matias.nocturnatracker.navigation.Screen
+import org.matias.nocturnatracker.presentation.about.AboutScreen
 import org.matias.nocturnatracker.presentation.auth.AuthViewModel
 import org.matias.nocturnatracker.presentation.detail.DetailScreen
 import org.matias.nocturnatracker.presentation.library.LibraryScreen
@@ -44,13 +45,14 @@ fun App() {
                     title = when {
                         currentRoute == Screen.Library.route -> "MI GRIMORIO"
                         currentRoute == Screen.Profile.route -> "PERFIL"
+                        currentRoute == Screen.About.route -> "ACERCA DE NOCTURNA"
                         isDetailScreen -> "DETALLES"
                         else -> "NOCTURNA"
                     }
                 )
             },
             bottomBar = {
-                if (!isDetailScreen) {
+                if (!isDetailScreen && currentRoute != Screen.About.route) {
                     NocturnaBottomBar(
                         currentRoute = currentRoute,
                         onNavigate = { route ->
@@ -96,7 +98,18 @@ fun App() {
 
                 composable(Screen.Profile.route) {
                     ProfileScreen(
-                        authViewModel = authViewModel
+                        authViewModel = authViewModel,
+                        onNavigateToAbout = {
+                            navController.navigate(Screen.About.route)
+                        }
+                    )
+                }
+
+                composable(Screen.About.route) {
+                    AboutScreen(
+                        onBackClick = {
+                            navController.popBackStack()
+                        }
                     )
                 }
 

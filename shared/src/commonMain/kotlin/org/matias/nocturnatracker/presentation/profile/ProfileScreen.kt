@@ -26,10 +26,10 @@ import org.matias.nocturnatracker.presentation.auth.AuthViewModel
 @Composable
 fun ProfileScreen(
     authViewModel: AuthViewModel,
+    onNavigateToAbout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val currentUser by authViewModel.currentUser.collectAsState(initial = null)
-    var showAboutDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -130,7 +130,7 @@ fun ProfileScreen(
                 // About Nocturna Button
                 NocturnaButton(
                     text = "Acerca de Nocturna",
-                    onClick = { showAboutDialog = true },
+                    onClick = onNavigateToAbout,
                     variant = NocturnaButtonVariant.OutlinedGold,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -174,38 +174,11 @@ fun ProfileScreen(
                 // About Nocturna Button
                 NocturnaButton(
                     text = "Acerca de Nocturna",
-                    onClick = { showAboutDialog = true },
+                    onClick = onNavigateToAbout,
                     variant = NocturnaButtonVariant.OutlinedGold,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-        }
-
-        if (showAboutDialog) {
-            AlertDialog(
-                onDismissRequest = { showAboutDialog = false },
-                containerColor = NocturnaSurface,
-                title = {
-                    Text(
-                        text = "Acerca de Nocturna",
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.Bold,
-                        color = NocturnaGold
-                    )
-                },
-                text = {
-                    Text(
-                        text = "Sección en desarrollo. Próximamente encontrarás información detallada sobre el proyecto Nocturna.",
-                        color = NocturnaTextSecondary,
-                        fontSize = 14.sp
-                    )
-                },
-                confirmButton = {
-                    TextButton(onClick = { showAboutDialog = false }) {
-                        Text("Entendido", color = NocturnaGold)
-                    }
-                }
-            )
         }
     }
 }
